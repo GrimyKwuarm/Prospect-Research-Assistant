@@ -12,13 +12,21 @@ The project is currently in documentation and workflow-design stage. No app or a
 - Prevent invented UC connections, unsupported capacity claims, and overstatement.
 - Keep final profiles clean, neutral, and appropriate for advancement use.
 
-## Current Contents
+## Current Repository Contents
+
+- `templates/`: Markdown versions of the profile templates for agent and workflow use.
+- `docs/`: project architecture, setup, testing, security, data model, and workflow notes.
+- Root operating files: project instructions, roadmap, status, decisions, changelog, and contribution guidance.
+
+## Local Reference Materials
+
+The initial local workspace also contains:
 
 - `prospect_research_tool_handoff_summary.txt`: handoff context from earlier planning work.
 - `Prospect Research Profile Template and Example.docx`: individual profile reference template.
 - `Organisation Prospect Profile Template and Example.docx`: organisation profile reference template.
-- `templates/`: Markdown versions of the profile templates for agent and workflow use.
-- `docs/`: project architecture, setup, testing, security, data model, and workflow notes.
+
+The Markdown templates in `templates/` are the working source for future Skills and workflows. The DOCX files remain polished local reference documents unless we decide to store them in the repository as binary assets.
 
 ## Recommended Starting Point
 
