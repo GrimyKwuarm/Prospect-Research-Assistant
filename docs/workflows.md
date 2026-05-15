@@ -10,6 +10,8 @@
 6. Due diligence and quality review checks sensitivities, private-data exposure, unsupported claims, and overstatement.
 7. Final polish produces a concise profile in NZ English.
 
+For the first prototype, use `docs/prototype-workflow.md` as the operating workflow and `docs/minimal-prototype-schema.md` as the required data package shape.
+
 ## Claim Review Gates
 
 Before drafting, each claim should pass through the model in `docs/data-model.md`.
