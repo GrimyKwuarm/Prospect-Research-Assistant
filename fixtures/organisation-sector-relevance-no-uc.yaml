@@ -1,0 +1,110 @@
+profile_request:
+  request_id: "fixture_sector_relevance_no_uc_001"
+  requested_at: "2026-05-15T09:00:00+12:00"
+  profile_type: "organisation"
+  output_length: "standard"
+  source_scope: "user_provided_only"
+  final_output_rules:
+    include_recommendations: false
+    include_source_notes: false
+    include_confidence_labels: false
+
+subject:
+  subject_id: "subj_harakeke_energy"
+  subject_type: "organisation"
+  display_name: "Harakeke Energy Systems"
+  identity_status: "confirmed"
+  identity_risk:
+    level: "low"
+    notes: "Fictional fixture; organisation clearly identified."
+  uc_connection_status: "not_confirmed"
+
+sources:
+  - source_id: "src_001"
+    source_type: "user_provided"
+    title: "Fictional organisation profile"
+    url_or_reference: "fixture"
+    access_date: "2026-05-15"
+    publication_date: "2026-02-20"
+    source_visibility: "internal"
+    reliability_tier: "primary"
+    recency_status: "current"
+    subject_match: "direct"
+    contains_private_data: false
+    contains_sensitive_data: false
+
+claims:
+  - claim_id: "clm_001"
+    subject_id: "subj_harakeke_energy"
+    topic: "organisation_overview"
+    claim_type: "fact"
+    text: "Harakeke Energy Systems develops battery management software for commercial energy storage."
+    source_ids: ["src_001"]
+    evidence_strength: "strong"
+    confidence: "high"
+    confidence_reason: "Directly stated in supplied fictional organisation profile."
+    identity_link: "direct"
+    source_recency: "current"
+    sensitivity:
+      level: "none"
+      categories: []
+    privacy:
+      contains_private_data: false
+      donor_level_data: false
+      final_output_allowed: true
+    inclusion:
+      status: "include"
+      profile_section: "organisation_overview"
+      wording_guidance: "State plainly."
+      exclusion_reason: null
+    review_status: "approved"
+
+  - claim_id: "clm_002"
+    subject_id: "subj_harakeke_energy"
+    topic: "interest_alignment"
+    claim_type: "inference"
+    text: "The organisation has sector relevance to UC themes in engineering, energy systems, and innovation."
+    source_ids: ["src_001"]
+    evidence_strength: "adequate"
+    confidence: "medium"
+    confidence_reason: "Sector relevance is supported, but it is not a confirmed relationship."
+    identity_link: "direct"
+    source_recency: "current"
+    sensitivity:
+      level: "none"
+      categories: []
+    privacy:
+      contains_private_data: false
+      donor_level_data: false
+      final_output_allowed: true
+    inclusion:
+      status: "include_softened"
+      profile_section: "sector_position_and_partnership_relevance"
+      wording_guidance: "Frame as sector relevance only; do not imply UC connection."
+      exclusion_reason: null
+    review_status: "approved"
+
+  - claim_id: "clm_003"
+    subject_id: "subj_harakeke_energy"
+    topic: "uc_connection"
+    claim_type: "absence"
+    text: "No confirmed UC connection identified in the material reviewed."
+    source_ids: ["src_001"]
+    evidence_strength: "adequate"
+    confidence: "high"
+    confidence_reason: "The supplied material identifies sector relevance but no UC relationship."
+    identity_link: "direct"
+    source_recency: "current"
+    sensitivity:
+      level: "none"
+      categories: []
+    privacy:
+      contains_private_data: false
+      donor_level_data: false
+      final_output_allowed: true
+    inclusion:
+      status: "include"
+      profile_section: "confirmed_uc_connection"
+      wording_guidance: "Use the standard no-confirmed-connection wording."
+      exclusion_reason: null
+    review_status: "approved"
