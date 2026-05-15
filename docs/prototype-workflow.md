@@ -166,6 +166,22 @@ Each run should produce:
 
 The final profile should not expose the internal claim package unless the user asks for the working notes.
 
+## Runner
+
+Use the dependency-free prototype runner to validate fixture packages:
+
+```powershell
+python scripts/prototype_runner.py fixtures
+```
+
+For machine-readable output:
+
+```powershell
+python scripts/prototype_runner.py fixtures --json
+```
+
+The runner checks the safety-critical rules in `docs/minimal-prototype-schema.md` and reports claim counts by inclusion status.
+
 ## Definition of Done
 
 A prototype run is done only when:
