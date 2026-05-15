@@ -13,3 +13,7 @@
 - Expanded the internal claim and evidence model.
 - Added source reliability, recency, confidence, sensitivity, privacy, inclusion, contradiction, review, and final-output gate rules.
 - Updated workflow docs with claim review and final-output gates.
+- Added a minimal prototype schema.
+- Added a first prototype workflow.
+- Added the Source Quality Checker Skill spec and detailed source-quality rubric.
+- Added fictional YAML fixtures for confirmed UC connection, no confirmed UC connection, ambiguous identity, unsupported capacity, and sector relevance without UC connection.
