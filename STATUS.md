@@ -4,7 +4,7 @@
 
 The project is in foundation setup. The workspace contains source handoff notes and two DOCX profile templates for individual and organisation prospect profiles.
 
-No application code has been implemented yet.
+The first local prototype runner has been added for fixture validation.
 
 ## Completed
 
@@ -19,10 +19,12 @@ No application code has been implemented yet.
 - Created the first prototype workflow.
 - Created the Source Quality Checker Skill spec.
 - Created fictional test fixtures for common safety cases.
+- Added a dependency-free Python prototype runner.
+- Added automated tests for the runner and fixtures.
 
 ## In Progress
 
-- Preparing to choose the first implementation style and build the prototype runner.
+- Preparing to add a draft-profile step that uses only approved and softened claims.
 
 ## Known Constraints
 
@@ -32,4 +34,4 @@ No application code has been implemented yet.
 
 ## Next Recommended Discussion
 
-Decide whether the first prototype runner should be Codex-native only, a small local command-line tool, or a lightweight local app.
+Decide how the draft-profile step should format output from approved and softened claims.
