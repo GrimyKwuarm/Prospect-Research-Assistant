@@ -146,6 +146,15 @@ class ValidationReport:
             self.valid = False
 
 
+@dataclass
+class DraftProfile:
+    path: str
+    subject_name: str
+    profile_type: str
+    sections: list[dict[str, Any]]
+    omitted_claim_ids: list[str]
+
+
 class TinyYamlError(ValueError):
     pass
 
@@ -580,6 +589,179 @@ def validate_path(path: Path) -> ValidationReport:
     return validate_package(data, path)
 
 
+def load_package(path: Path) -> dict[str, Any]:
+    data = load_tiny_yaml(path)
+    if not isinstance(data, dict):
+        raise TinyYamlError("Fixture must be a top-level mapping.")
+    return data
+
+
+def eligible_for_draft(claim: dict[str, Any], subject: dict[str, Any]) -> bool:
+    inclusion = claim.get("inclusion") if isinstance(claim.get("inclusion"), dict) else {}
+    privacy = claim.get("privacy") if isinstance(claim.get("privacy"), dict) else {}
+    sensitivity = claim.get("sensitivity") if isinstance(claim.get("sensitivity"), dict) else {}
+    inclusion_status = inclusion.get("status")
+
+    if inclusion_status not in {"include", "include_softened"}:
+        return False
+    if claim.get("review_status") != "approved":
+        return False
+    if claim.get("confidence") in {"low", "excluded"}:
+        return False
+    if privacy.get("final_output_allowed") is False:
+        return False
+    if privacy.get("donor_level_data") is True:
+        return False
+    if subject.get("identity_status") == "ambiguous":
+        return False
+    if claim.get("identity_link") in {"ambiguous", "not_established"}:
+        return False
+    if sensitivity.get("level") in {"high", "restricted"}:
+        return False
+    if claim.get("topic") == "uc_connection" and claim.get("claim_type") == "inference":
+        return False
+    if claim.get("topic") == "capacity_indicator" and contains_unsupported_capacity_language(str(claim.get("text", ""))):
+        return False
+    return True
+
+
+def section_title(profile_type: str, section_id: str) -> str:
+    individual_titles = {
+        "snapshot": "Snapshot",
+        "current_roles": "Current Roles and Public Profile",
+        "current_role": "Current Roles and Public Profile",
+        "confirmed_uc_connection": "Connection to UC",
+        "uc_connection": "Connection to UC",
+        "philanthropy": "Philanthropy and Community Involvement",
+        "community_activity": "Philanthropy and Community Involvement",
+        "professional_and_wealth_indicators": "Professional and Capacity Indicators",
+        "capacity_indicator": "Professional and Capacity Indicators",
+        "interest_alignment": "Interests and Alignment",
+        "sensitivity": "Due Diligence and Sensitivities",
+    }
+    organisation_titles = {
+        "snapshot": "Snapshot",
+        "organisation_overview": "Organisation Overview",
+        "leadership": "Leadership and Key People",
+        "confirmed_uc_connection": "Confirmed UC Connection",
+        "uc_connection": "Confirmed UC Connection",
+        "philanthropy": "Philanthropy, Sponsorship, and Community Activity",
+        "community_activity": "Philanthropy, Sponsorship, and Community Activity",
+        "sector_position_and_partnership_relevance": "Sector Position and Partnership Relevance",
+        "interest_alignment": "Sector Position and Partnership Relevance",
+        "capacity_indicator": "Capacity and Resourcing Indicators",
+        "sensitivity": "Sensitivities and Due Diligence",
+    }
+    titles = organisation_titles if profile_type == "organisation" else individual_titles
+    return titles.get(section_id, section_id.replace("_", " ").title())
+
+
+def section_order(profile_type: str) -> list[str]:
+    if profile_type == "organisation":
+        return [
+            "snapshot",
+            "organisation_overview",
+            "leadership",
+            "confirmed_uc_connection",
+            "uc_connection",
+            "philanthropy",
+            "community_activity",
+            "sector_position_and_partnership_relevance",
+            "interest_alignment",
+            "capacity_indicator",
+            "sensitivity",
+        ]
+    return [
+        "snapshot",
+        "current_roles",
+        "current_role",
+        "confirmed_uc_connection",
+        "uc_connection",
+        "philanthropy",
+        "community_activity",
+        "professional_and_wealth_indicators",
+        "capacity_indicator",
+        "interest_alignment",
+        "sensitivity",
+    ]
+
+
+def draft_profile(data: dict[str, Any], path: Path) -> DraftProfile:
+    subject = data.get("subject") if isinstance(data.get("subject"), dict) else {}
+    request = data.get("profile_request") if isinstance(data.get("profile_request"), dict) else {}
+    claims = data.get("claims") if isinstance(data.get("claims"), list) else []
+    profile_type = str(request.get("profile_type") or subject.get("subject_type") or "individual")
+    subject_name = str(subject.get("display_name") or "Untitled Subject")
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    omitted: list[str] = []
+
+    for claim in claims:
+        if not isinstance(claim, dict):
+            continue
+        claim_id = str(claim.get("claim_id") or "")
+        if not eligible_for_draft(claim, subject):
+            if claim_id:
+                omitted.append(claim_id)
+            continue
+        inclusion = claim.get("inclusion") if isinstance(claim.get("inclusion"), dict) else {}
+        section_id = str(inclusion.get("profile_section") or claim.get("topic") or "other")
+        grouped.setdefault(section_id, []).append(claim)
+
+    ordered_ids = [section_id for section_id in section_order(profile_type) if section_id in grouped]
+    ordered_ids.extend(section_id for section_id in grouped if section_id not in ordered_ids)
+
+    sections: list[dict[str, Any]] = []
+    for section_id in ordered_ids:
+        section_claims = grouped[section_id]
+        sections.append(
+            {
+                "section_id": section_id,
+                "heading": section_title(profile_type, section_id),
+                "claims": section_claims,
+                "supporting_claim_ids": [claim.get("claim_id") for claim in section_claims],
+            }
+        )
+
+    return DraftProfile(
+        path=str(path),
+        subject_name=subject_name,
+        profile_type=profile_type,
+        sections=sections,
+        omitted_claim_ids=omitted,
+    )
+
+
+def render_draft_markdown(draft: DraftProfile) -> str:
+    lines = [
+        f"# Draft Profile: {draft.subject_name}",
+        "",
+        f"Profile type: {draft.profile_type}",
+        "",
+        "This is a structured draft generated only from claims that passed the prototype safety filter.",
+        "",
+    ]
+    if not draft.sections:
+        lines.extend(["No claims are currently eligible for draft output.", ""])
+    for section in draft.sections:
+        lines.extend([f"## {section['heading']}", ""])
+        for claim in section["claims"]:
+            inclusion = claim.get("inclusion") if isinstance(claim.get("inclusion"), dict) else {}
+            status = inclusion.get("status")
+            prefix = "Softened: " if status == "include_softened" else ""
+            guidance = inclusion.get("wording_guidance")
+            lines.append(f"- {prefix}{claim.get('text')}")
+            if status == "include_softened" and guidance:
+                lines.append(f"  - Wording guidance: {guidance}")
+        lines.append("")
+    if draft.omitted_claim_ids:
+        lines.extend(["## Omitted Internal Claims", ""])
+        lines.append("The following claims were not eligible for draft output:")
+        for claim_id in draft.omitted_claim_ids:
+            lines.append(f"- {claim_id}")
+        lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def iter_fixture_paths(paths: list[Path]) -> list[Path]:
     expanded: list[Path] = []
     for path in paths:
@@ -590,20 +772,46 @@ def iter_fixture_paths(paths: list[Path]) -> list[Path]:
     return expanded
 
 
+def output_directory_for_fixture(base_dir: Path, fixture_path: Path) -> Path:
+    return base_dir / fixture_path.stem
+
+
+def write_outputs(base_dir: Path, fixture_path: Path, report: ValidationReport, draft: DraftProfile) -> None:
+    target_dir = output_directory_for_fixture(base_dir, fixture_path)
+    target_dir.mkdir(parents=True, exist_ok=True)
+    (target_dir / "review-report.json").write_text(json.dumps(report_to_dict(report), indent=2), encoding="utf-8")
+    (target_dir / "draft-profile.md").write_text(render_draft_markdown(draft), encoding="utf-8")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate prospect research prototype fixtures.")
     parser.add_argument("paths", nargs="+", type=Path, help="Fixture YAML file or directory to validate.")
     parser.add_argument("--json", action="store_true", help="Emit JSON instead of text.")
+    parser.add_argument("--draft", action="store_true", help="Include draft profile markdown in text output.")
+    parser.add_argument("--output-dir", type=Path, help="Write review-report.json and draft-profile.md under this directory.")
     args = parser.parse_args(argv)
 
-    reports = [validate_path(path) for path in iter_fixture_paths(args.paths)]
+    fixture_paths = iter_fixture_paths(args.paths)
+    reports = [validate_path(path) for path in fixture_paths]
+    drafts: list[DraftProfile] = []
+    for fixture_path in fixture_paths:
+        try:
+            drafts.append(draft_profile(load_package(fixture_path), fixture_path))
+        except Exception:
+            drafts.append(DraftProfile(str(fixture_path), "Unknown Subject", "unknown", [], []))
+    if args.output_dir:
+        for fixture_path, report, draft in zip(fixture_paths, reports, drafts):
+            write_outputs(args.output_dir, fixture_path, report, draft)
     if args.json:
         print(json.dumps([report_to_dict(report) for report in reports], indent=2))
     else:
-        for idx, report in enumerate(reports):
+        for idx, (report, draft) in enumerate(zip(reports, drafts)):
             if idx:
                 print()
             print(format_text_report(report))
+            if args.draft:
+                print()
+                print(render_draft_markdown(draft).rstrip())
     return 0 if all(report.valid for report in reports) else 1
 
 

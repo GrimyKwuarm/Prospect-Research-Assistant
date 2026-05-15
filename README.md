@@ -2,7 +2,8 @@
 
 This project is a foundation for a Codex-assisted prospect research tool for University of Canterbury advancement work. It is intended to produce individual and organisation prospect profiles using reusable Skills, structured evidence review, and specialist agent roles.
 
-The project is currently in documentation and workflow-design stage. No app or automated profile workflow has been implemented yet. The first deterministic prototype runner now validates fictional claim packages against the minimal safety schema.
+The project is currently in documentation and workflow-design stage. No app or automated profile workflow has been implemented yet.
+The first deterministic prototype runner now validates fictional claim packages against the minimal safety schema.
 
 ## Goals
 
@@ -44,6 +45,18 @@ Validate all fictional fixtures:
 
 ```powershell
 python scripts/prototype_runner.py fixtures
+```
+
+Validate and show structured draft profiles:
+
+```powershell
+python scripts/prototype_runner.py fixtures --draft
+```
+
+Write local review and draft files:
+
+```powershell
+python scripts/prototype_runner.py fixtures --output-dir outputs
 ```
 
 Run tests:

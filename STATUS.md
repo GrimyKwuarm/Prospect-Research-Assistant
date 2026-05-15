@@ -4,6 +4,7 @@
 
 The project is in foundation setup. The workspace contains source handoff notes and two DOCX profile templates for individual and organisation prospect profiles.
 
+No application code has been implemented yet.
 The first local prototype runner has been added for fixture validation.
 
 ## Completed
@@ -21,17 +22,19 @@ The first local prototype runner has been added for fixture validation.
 - Created fictional test fixtures for common safety cases.
 - Added a dependency-free Python prototype runner.
 - Added automated tests for the runner and fixtures.
+- Added structured draft-profile generation from approved and softened claims.
+- Added local output generation for review reports and draft profiles.
 
 ## In Progress
 
-- Preparing to add a draft-profile step that uses only approved and softened claims.
+- Preparing to create the Individual and Organisation Prospect Profile Builder Skills.
 
 ## Known Constraints
 
 - Git is not currently available from this shell.
-- DOCX files are structurally present locally, but visual QA should be completed by opening them in Word.
+- DOCX files are structurally present, but visual QA should be completed by opening them in Word.
 - Implementation stack has not been chosen.
 
 ## Next Recommended Discussion
 
-Decide how the draft-profile step should format output from approved and softened claims.
+Define the writer Skills that turn safe structured drafts into polished profile prose.

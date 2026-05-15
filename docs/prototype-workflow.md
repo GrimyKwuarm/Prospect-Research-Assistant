@@ -182,6 +182,25 @@ python scripts/prototype_runner.py fixtures --json
 
 The runner checks the safety-critical rules in `docs/minimal-prototype-schema.md` and reports claim counts by inclusion status.
 
+To include structured draft profiles in the console output:
+
+```powershell
+python scripts/prototype_runner.py fixtures --draft
+```
+
+To write local outputs:
+
+```powershell
+python scripts/prototype_runner.py fixtures --output-dir outputs
+```
+
+Each fixture output directory contains:
+
+- `review-report.json`
+- `draft-profile.md`
+
+Generated `outputs/` are local working files and are ignored by Git.
+
 ## Definition of Done
 
 A prototype run is done only when:

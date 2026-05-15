@@ -19,3 +19,5 @@
 - Added fictional YAML fixtures for confirmed UC connection, no confirmed UC connection, ambiguous identity, unsupported capacity, and sector relevance without UC connection.
 - Added a dependency-free Python prototype runner for validating fixtures.
 - Added automated tests for the runner and safety fixtures.
+- Added structured draft-profile generation from approved and softened claims.
+- Added local output generation for review reports and draft profiles.

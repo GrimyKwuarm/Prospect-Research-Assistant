@@ -10,6 +10,16 @@ Run:
 python -m unittest discover -s tests
 ```
 
+The test suite covers:
+
+- fixture parsing,
+- schema validation,
+- blocked ambiguous-identity claims,
+- blocked unsupported capacity claims,
+- softened sector-relevance claims,
+- no-confirmed-UC wording,
+- local output file generation.
+
 Current manual checks:
 
 - Confirm the DOCX templates open correctly in Word.
