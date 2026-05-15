@@ -2,7 +2,13 @@
 
 ## Current Testing
 
-No automated tests exist yet because there is no application code.
+The prototype runner has automated tests using fictional fixtures.
+
+Run:
+
+```powershell
+python -m unittest discover -s tests
+```
 
 Current manual checks:
 
