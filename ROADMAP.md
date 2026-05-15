@@ -13,12 +13,14 @@
 - Define source quality and confidence levels.
 - Decide how structured notes should be represented.
 - Decide what data may and may not appear in final outputs.
+- Define the minimal prototype schema.
+- Create fictional fixtures for safety and workflow testing.
 
 ## Phase 3: First Skills
 
 Suggested order:
 
-1. Source Quality Checker.
+1. Source Quality Checker. Initial skill spec created in `skills/source-quality-checker/`.
 2. Individual Prospect Profile Builder.
 3. Organisation Prospect Profile Builder.
 4. Due Diligence Screen.
