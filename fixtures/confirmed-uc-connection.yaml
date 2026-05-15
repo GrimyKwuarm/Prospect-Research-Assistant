@@ -1,0 +1,85 @@
+profile_request:
+  request_id: "fixture_confirmed_uc_001"
+  requested_at: "2026-05-15T09:00:00+12:00"
+  profile_type: "individual"
+  output_length: "standard"
+  source_scope: "user_provided_only"
+  final_output_rules:
+    include_recommendations: false
+    include_source_notes: false
+    include_confidence_labels: false
+
+subject:
+  subject_id: "subj_elena_rivers"
+  subject_type: "individual"
+  display_name: "Dr Elena Rivers"
+  identity_status: "confirmed"
+  identity_risk:
+    level: "low"
+    notes: "Fictional fixture; identity directly tied to supplied source."
+  uc_connection_status: "confirmed"
+
+sources:
+  - source_id: "src_001"
+    source_type: "user_provided"
+    title: "Fictional official speaker biography"
+    url_or_reference: "fixture"
+    access_date: "2026-05-15"
+    publication_date: "2026-04-01"
+    source_visibility: "internal"
+    reliability_tier: "primary"
+    recency_status: "current"
+    subject_match: "direct"
+    contains_private_data: false
+    contains_sensitive_data: false
+
+claims:
+  - claim_id: "clm_001"
+    subject_id: "subj_elena_rivers"
+    topic: "current_role"
+    claim_type: "fact"
+    text: "Dr Elena Rivers is chief executive of Koru Materials."
+    source_ids: ["src_001"]
+    evidence_strength: "strong"
+    confidence: "high"
+    confidence_reason: "Directly stated in the fictional official biography."
+    identity_link: "direct"
+    source_recency: "current"
+    sensitivity:
+      level: "none"
+      categories: []
+    privacy:
+      contains_private_data: false
+      donor_level_data: false
+      final_output_allowed: true
+    inclusion:
+      status: "include"
+      profile_section: "current_roles"
+      wording_guidance: "State plainly."
+      exclusion_reason: null
+    review_status: "approved"
+
+  - claim_id: "clm_002"
+    subject_id: "subj_elena_rivers"
+    topic: "uc_connection"
+    claim_type: "fact"
+    text: "Dr Elena Rivers completed a Bachelor of Engineering with Honours at UC."
+    source_ids: ["src_001"]
+    evidence_strength: "strong"
+    confidence: "high"
+    confidence_reason: "Directly stated in the fictional official biography."
+    identity_link: "direct"
+    source_recency: "current"
+    sensitivity:
+      level: "none"
+      categories: []
+    privacy:
+      contains_private_data: false
+      donor_level_data: false
+      final_output_allowed: true
+    inclusion:
+      status: "include"
+      profile_section: "confirmed_uc_connection"
+      wording_guidance: "State as a confirmed UC connection."
+      exclusion_reason: null
+    review_status: "approved"
