@@ -1,0 +1,60 @@
+profile_request:
+  request_id: "fixture_ambiguous_identity_001"
+  requested_at: "2026-05-15T09:00:00+12:00"
+  profile_type: "individual"
+  output_length: "short"
+  source_scope: "user_provided_only"
+  final_output_rules:
+    include_recommendations: false
+    include_source_notes: false
+    include_confidence_labels: false
+
+subject:
+  subject_id: "subj_jordan_lee"
+  subject_type: "individual"
+  display_name: "Jordan Lee"
+  identity_status: "ambiguous"
+  identity_risk:
+    level: "high"
+    notes: "Fictional fixture with multiple possible people sharing the same name."
+  uc_connection_status: "unknown"
+
+sources:
+  - source_id: "src_001"
+    source_type: "user_provided"
+    title: "Fictional event note"
+    url_or_reference: "fixture"
+    access_date: "2026-05-15"
+    publication_date: "unknown"
+    source_visibility: "internal"
+    reliability_tier: "secondary"
+    recency_status: "unknown"
+    subject_match: "ambiguous"
+    contains_private_data: false
+    contains_sensitive_data: false
+
+claims:
+  - claim_id: "clm_001"
+    subject_id: "subj_jordan_lee"
+    topic: "current_role"
+    claim_type: "fact"
+    text: "Jordan Lee may be associated with a Christchurch investment firm."
+    source_ids: ["src_001"]
+    evidence_strength: "weak"
+    confidence: "low"
+    confidence_reason: "Source does not disambiguate which Jordan Lee is intended."
+    identity_link: "ambiguous"
+    source_recency: "unknown"
+    sensitivity:
+      level: "medium"
+      categories: ["ambiguous_identity", "financial"]
+    privacy:
+      contains_private_data: false
+      donor_level_data: false
+      final_output_allowed: false
+    inclusion:
+      status: "needs_review"
+      profile_section: "current_roles"
+      wording_guidance: "Do not use until identity is clarified."
+      exclusion_reason: "Ambiguous identity."
+    review_status: "challenged"
