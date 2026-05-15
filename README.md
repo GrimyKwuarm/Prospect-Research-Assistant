@@ -15,7 +15,9 @@ The project is currently in documentation and workflow-design stage. No app or a
 ## Current Repository Contents
 
 - `templates/`: Markdown versions of the profile templates for agent and workflow use.
-- `docs/`: project architecture, setup, testing, security, data model, and workflow notes.
+- `docs/`: project architecture, setup, testing, security, data model, prototype workflow, and schema notes.
+- `skills/`: reusable Skill specs for project workflows.
+- `fixtures/`: fictional test cases for safety and workflow validation.
 - Root operating files: project instructions, roadmap, status, decisions, changelog, and contribution guidance.
 
 ## Local Reference Materials
@@ -32,8 +34,9 @@ The Markdown templates in `templates/` are the working source for future Skills 
 
 1. Read `AGENTS.md`.
 2. Review `docs/architecture.md` and `docs/data-model.md`.
-3. Use the Markdown templates in `templates/` as the working source for future Skills.
-4. Keep the DOCX files as polished reference documents.
+3. Review `docs/minimal-prototype-schema.md` and `docs/prototype-workflow.md`.
+4. Use the Markdown templates in `templates/` as the working source for future Skills.
+5. Keep the DOCX files as polished reference documents.
 
 ## Important Output Rules
 
