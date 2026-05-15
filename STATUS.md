@@ -15,10 +15,14 @@ No application code has been implemented yet.
 - Created Markdown working templates for individual and organisation profiles.
 - Connected the project foundation to the GitHub repository.
 - Drafted a comprehensive internal claim and evidence model.
+- Created a minimal prototype schema.
+- Created the first prototype workflow.
+- Created the Source Quality Checker Skill spec.
+- Created fictional test fixtures for common safety cases.
 
 ## In Progress
 
-- Preparing to discuss the first prototype workflow.
+- Preparing to choose the first implementation style and build the prototype runner.
 
 ## Known Constraints
 
@@ -28,4 +32,4 @@ No application code has been implemented yet.
 
 ## Next Recommended Discussion
 
-Review the internal claim and evidence model, then decide the minimal prototype schema and first workflow implementation style.
+Decide whether the first prototype runner should be Codex-native only, a small local command-line tool, or a lightweight local app.
