@@ -2,7 +2,7 @@
 
 This project is a foundation for a Codex-assisted prospect research tool for University of Canterbury advancement work. It is intended to produce individual and organisation prospect profiles using reusable Skills, structured evidence review, and specialist agent roles.
 
-The project is currently in documentation and workflow-design stage. No app or automated profile workflow has been implemented yet.
+The project is currently in documentation and workflow-design stage. No app or automated profile workflow has been implemented yet. The first deterministic prototype runner now validates fictional claim packages against the minimal safety schema.
 
 ## Goals
 
@@ -37,6 +37,20 @@ The Markdown templates in `templates/` are the working source for future Skills 
 3. Review `docs/minimal-prototype-schema.md` and `docs/prototype-workflow.md`.
 4. Use the Markdown templates in `templates/` as the working source for future Skills.
 5. Keep the DOCX files as polished reference documents.
+
+## Prototype Runner
+
+Validate all fictional fixtures:
+
+```powershell
+python scripts/prototype_runner.py fixtures
+```
+
+Run tests:
+
+```powershell
+python -m unittest discover -s tests
+```
 
 ## Important Output Rules
 
